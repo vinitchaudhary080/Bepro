@@ -1,11 +1,16 @@
-// src/pages/MyTeam.tsx
 import React from "react";
 import { ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { TeamStackParamList } from "../navigation/TeamStack";
+
 import MyTeamHero, { TeamTypeItem } from "../components/myteam/Hero";
 import YourTeam, { TeamCardItem } from "../components/myteam/YourTeam";
 import MatchesSection from "../components/myteam/MatchesSection";
 
 export default function MyTeam() {
+  const navigation = useNavigation<NativeStackNavigationProp<TeamStackParamList>>();
+
   const items: TeamTypeItem[] = [
     { id: "create", title: "", icon: require("../assets/myteam/create-badge.png"), isCreate: true },
     { id: 1, title: "T20 League", icon: require("../assets/myteam/pill.png") },
@@ -40,12 +45,11 @@ export default function MyTeam() {
       <MyTeamHero
         bgImage={require("../assets/myteam/hero-gradient.png")}
         items={items}
-        onPressCreate={() => console.log("Create Team")}
+        onPressCreate={() => navigation.navigate("CreateTeam")} // 👈 Go to CreateTeamPage
         onPressItem={(it) => console.log("Type tapped:", it.title)}
       />
 
       <YourTeam items={yourTeamItems} />
-
       <MatchesSection />
     </ScrollView>
   );

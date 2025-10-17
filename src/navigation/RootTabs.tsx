@@ -4,10 +4,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import WavyTabBar from "../components/nav/WavyTabBar";
 import HomeStack from "../navigation/HomeStack";
-import MyTeam from "../pages/MyTeam";
 import PlayStack from "../navigation/PlayStack";
 import RankingPage from "../pages/RankingPage";
 import ProfileStack from "../navigation/ProfileStack";
+import TeamStack from "./TeamStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,9 +19,16 @@ export default function RootTabs() {
       tabBar={(props) => {
         const { state } = props;
         const currentTab = state.routes[state.index];
-        const nestedState: any = currentTab?.state;
+
+        // 🔒 safely read nested stack's active child route name
+        const nestedState: any =
+          (currentTab as any)?.state ||
+          // sometimes in RN v6 nested state sits on "params.state" when restored
+          (currentTab as any)?.params?.state;
+
+        const childIndex = nestedState?.index ?? 0;
         const childRouteName =
-          nestedState?.routes?.[nestedState?.index || 0]?.name ?? undefined;
+          nestedState?.routes?.[childIndex]?.name ?? undefined;
 
         /* ---------------- PLAY STACK ---------------- */
         const hideOnPlay =
@@ -29,6 +36,10 @@ export default function RootTabs() {
           (childRouteName === "CreateMatch" ||
             childRouteName === "SetGameRules" ||
             childRouteName === "FixTiming");
+
+        /* ---------------- TEAM STACK (NEW) ---------------- */
+        const hideOnTeamCreate =
+          currentTab.name === "Team" && childRouteName === "CreateTeam";
 
         /* ---------------- PROFILE STACK ---------------- */
         const hideOnProfileDailyTask =
@@ -74,6 +85,7 @@ export default function RootTabs() {
         /* ---------------- FINAL CHECK ---------------- */
         const shouldHide =
           hideOnPlay ||
+          hideOnTeamCreate || // 👈 NEW
           hideOnProfileDailyTask ||
           hideOnProfileWallet ||
           hideOnProfilePermission ||
@@ -93,7 +105,7 @@ export default function RootTabs() {
       }}
     >
       <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Team" component={MyTeam} />
+      <Tab.Screen name="Team" component={TeamStack} options={{ headerShown: false }} />
       <Tab.Screen
         name="Play"
         component={PlayStack}
@@ -103,14 +115,13 @@ export default function RootTabs() {
         })}
       />
       <Tab.Screen name="Rankings" component={RankingPage} />
-      {/* ✅ Always open ProfileHome on tab press */}
       <Tab.Screen
         name="Profile"
         component={ProfileStack}
         options={{ headerShown: false, unmountOnBlur: true }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            e.preventDefault(); // ⬅️ stop default "last route" behavior
+            e.preventDefault();
             navigation.navigate("Profile", { screen: "ProfileHome" });
           },
         })}

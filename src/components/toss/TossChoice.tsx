@@ -2,6 +2,7 @@
 import React from "react";
 import { View, Text, Pressable, StyleSheet, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = {
   onSelect: (v: "Heads" | "Tails") => void;
@@ -13,12 +14,23 @@ const PINK2 = "#F46977";
 const SHEET_BG = "#FFFFFF";
 
 export default function TossChoice({ onSelect, onClose }: Props) {
+  const insets = useSafeAreaInsets();
   return (
-    <View style={styles.sheet}>
+    <View style={[styles.sheet, { paddingBottom: 10 + Math.max(insets.bottom, 8) }]}>
+      {/* top grabber */}
+      <View style={styles.grabber} />
+
       {/* close icon pill */}
-      <Pressable onPress={onClose} hitSlop={12} style={styles.close}>
-        <Text style={styles.closeTxt}>×</Text>
-      </Pressable>
+      <Pressable
+  onPress={() => onClose?.()}
+  hitSlop={12}
+  style={styles.close}
+  accessibilityRole="button"
+  accessibilityLabel="Close"
+>
+  <Text style={styles.closeTxt}>×</Text>
+</Pressable>
+
 
       <Text style={styles.title}>Make your call</Text>
       <Text style={styles.sub}>
@@ -54,7 +66,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     paddingTop: 18,
     paddingHorizontal: 16,
-    paddingBottom: 20,
     backgroundColor: SHEET_BG,
     borderTopLeftRadius: 26,
     borderTopRightRadius: 26,
@@ -63,6 +74,14 @@ const styles = StyleSheet.create({
     shadowRadius: 18,
     shadowOffset: { width: 0, height: -4 },
     elevation: 14,
+  },
+  grabber: {
+    alignSelf: "center",
+    width: 88,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: "rgba(0,0,0,0.08)",
+    marginBottom: 8,
   },
   title: {
     fontSize: 20,

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.select({ ios: 12, android: 8 }),
     paddingHorizontal: 16,
     paddingBottom: 12,
-    marginTop: 56,
+    
     backgroundColor: "#fff",
     flexDirection: "row",
     alignItems: "center",

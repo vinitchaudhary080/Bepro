@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         paddingHorizontal: 16,
-        marginTop: 56, // ✅ top margin applied
+        marginTop: 12, // ✅ top margin applied
         zIndex: 2, // ensure above overlay
     },
     title: {
