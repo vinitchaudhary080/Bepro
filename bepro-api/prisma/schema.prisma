@@ -1,4 +1,3 @@
-// ---------- GENERATOR & DATASOURCE ----------
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,7 +7,198 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ---------- ENUMS ----------
+model User {
+  id               String       @id @default(cuid())
+  name             String
+  email            String       @unique
+  passwordHash     String
+  role             String       @default("player")
+  phone            String?      @unique
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  refreshTokenHash String?
+  tokenVersion     Int          @default(0)
+  deletedAt        DateTime?
+  isActive         Boolean      @default(true)
+  playingXI        PlayingXI[]
+  profile          Profile?
+  teams            Team[]       @relation("TeamOwner")
+  invitesSent      TeamMember[] @relation("InvitedBy")
+  memberships      TeamMember[]
+}
+
+model Profile {
+  id           String        @id @default(cuid())
+  userId       String        @unique
+  fullName     String
+  gender       Gender
+  dob          DateTime?
+  country      String?
+  state        String?
+  city         String?
+  pincode      String?
+  role         PlayerRole
+  battingStyle BattingStyle
+  bowlingStyle BowlingStyle?
+  jerseyNumber Int?
+  heightCm     Int?
+  weightKg     Int?
+  bio          String?
+  avatarUrl    String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  user         User          @relation(fields: [userId], references: [id])
+}
+
+model Team {
+  id             String       @id @default(cuid())
+  name           String
+  slug           String       @unique
+  logoUrl        String?
+  ownerId        String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  battingInnings Innings[]    @relation("InningsBattingTeam")
+  bowlingInnings Innings[]    @relation("InningsBowlingTeam")
+  matchesAsA     Match[]      @relation("MatchTeamA")
+  matchesAsB     Match[]      @relation("MatchTeamB")
+  playingXI      PlayingXI[]  @relation("PlayingXITeam")
+  owner          User         @relation("TeamOwner", fields: [ownerId], references: [id])
+  members        TeamMember[]
+  tossWins       Toss[]       @relation("TossWinnerTeam")
+}
+
+model TeamMember {
+  id          String       @id @default(cuid())
+  teamId      String
+  userId      String
+  roleInTeam  TeamRole     @default(player)
+  status      MemberStatus @default(PENDING)
+  invitedById String?
+  note        String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  invitedBy   User?        @relation("InvitedBy", fields: [invitedById], references: [id])
+  team        Team         @relation(fields: [teamId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+
+  @@unique([teamId, userId], name: "teamId_userId")
+  @@index([teamId, status])
+  @@index([userId, status])
+}
+
+model Match {
+  id           String      @id @default(cuid())
+  tournamentId String?
+  teamAId      String
+  teamBId      String
+  ground       String
+  startTime    DateTime
+  overs        Int
+  ballType     BallType    @default(LEATHER)
+  status       MatchStatus @default(SCHEDULED)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  innings      Innings[]
+  teamA        Team        @relation("MatchTeamA", fields: [teamAId], references: [id])
+  teamB        Team        @relation("MatchTeamB", fields: [teamBId], references: [id])
+  lineup       PlayingXI[]
+  toss         Toss?
+
+  @@index([teamAId])
+  @@index([teamBId])
+  @@index([startTime])
+  @@index([status])
+}
+
+model Toss {
+  id           String       @id @default(cuid())
+  matchId      String       @unique
+  winnerTeamId String
+  decision     TossDecision
+  match        Match        @relation(fields: [matchId], references: [id])
+  winnerTeam   Team         @relation("TossWinnerTeam", fields: [winnerTeamId], references: [id])
+}
+
+model PlayingXI {
+  id           String  @id @default(cuid())
+  matchId      String
+  teamId       String
+  userId       String
+  isCaptain    Boolean @default(false)
+  isKeeper     Boolean @default(false)
+  battingOrder Int?
+  match        Match   @relation(fields: [matchId], references: [id])
+  team         Team    @relation("PlayingXITeam", fields: [teamId], references: [id])
+  player       User    @relation(fields: [userId], references: [id])
+
+  @@unique([matchId, teamId, userId])
+  @@unique([matchId, teamId, battingOrder])
+  @@index([matchId, teamId])
+}
+
+model Innings {
+  id            String    @id @default(cuid())
+  matchId       String
+  number        Int
+  battingTeamId String
+  bowlingTeamId String
+  startedAt     DateTime  @default(now())
+  endedAt       DateTime?
+  totalRuns     Int       @default(0)
+  wickets       Int       @default(0)
+  legalBalls    Int       @default(0)
+  wides         Int       @default(0)
+  noBalls       Int       @default(0)
+  byes          Int       @default(0)
+  legByes       Int       @default(0)
+  battingTeam   Team      @relation("InningsBattingTeam", fields: [battingTeamId], references: [id])
+  bowlingTeam   Team      @relation("InningsBowlingTeam", fields: [bowlingTeamId], references: [id])
+  match         Match     @relation(fields: [matchId], references: [id])
+  overs         Over[]
+
+  @@index([matchId, number])
+}
+
+model Over {
+  id           String    @id @default(cuid())
+  inningsId    String
+  number       Int
+  bowlerId     String
+  strikerId    String
+  nonStrikerId String
+  startedAt    DateTime  @default(now())
+  endedAt      DateTime?
+  legalBalls   Int       @default(0)
+  isComplete   Boolean   @default(false)
+  balls        Ball[]
+  innings      Innings   @relation(fields: [inningsId], references: [id])
+
+  @@unique([inningsId, number])
+  @@index([inningsId, number])
+}
+
+model Ball {
+  id                 String      @id @default(cuid())
+  overId             String
+  seq                Int
+  batsmanId          String
+  nonStrikerId       String
+  bowlerId           String
+  runs               Int         @default(0)
+  extraType          ExtraType   @default(NONE)
+  extraRuns          Int         @default(0)
+  isLegal            Boolean
+  wicketType         WicketType?
+  dismissalBatsmanId String?
+  fielderId          String?
+  commentary         String?
+  ts                 DateTime    @default(now())
+  over               Over        @relation(fields: [overId], references: [id])
+
+  @@index([overId, seq])
+}
+
 enum TeamRole {
   player
   captain
@@ -72,7 +262,6 @@ enum BowlingStyle {
   LEFT_ARM_CHINAMAN
 }
 
-// --- Scoring enums ---
 enum ExtraType {
   NONE
   WIDE
@@ -91,214 +280,4 @@ enum WicketType {
   OBSTRUCTING
   RETIRED
   TIMED_OUT
-}
-
-// ---------- MODELS ----------
-model User {
-  id               String       @id @default(cuid())
-  name             String
-  email            String       @unique
-  passwordHash     String
-  role             String       @default("player")
-  phone            String?      @unique
-  refreshTokenHash String?
-  tokenVersion     Int          @default(0)
-  isActive         Boolean      @default(true)
-  deletedAt        DateTime?
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
-
-  // Relations
-  teams            Team[]       @relation("TeamOwner")
-  memberships      TeamMember[]
-  invitesSent      TeamMember[] @relation("InvitedBy")
-  playingXI        PlayingXI[]
-
-  // Profile (one-to-one)
-  profile          Profile?
-}
-
-model Profile {
-  id             String        @id @default(cuid())
-  userId         String        @unique
-  fullName       String
-  gender         Gender
-  dob            DateTime?
-  country        String?
-  state          String?
-  city           String?
-  pincode        String?
-
-  role           PlayerRole
-  battingStyle   BattingStyle
-  bowlingStyle   BowlingStyle?
-  jerseyNumber   Int?
-  heightCm       Int?
-  weightKg       Int?
-  bio            String?
-  avatarUrl      String?
-
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-
-  user           User          @relation(fields: [userId], references: [id])
-}
-
-model Team {
-  id        String   @id @default(cuid())
-  name      String
-  slug      String   @unique
-  logoUrl   String?
-  ownerId   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  owner          User         @relation("TeamOwner", fields: [ownerId], references: [id])
-  members        TeamMember[]
-  matchesAsA     Match[]      @relation("MatchTeamA")
-  matchesAsB     Match[]      @relation("MatchTeamB")
-  tossWins       Toss[]       @relation("TossWinnerTeam")
-  playingXI      PlayingXI[]  @relation("PlayingXITeam")
-  battingInnings Innings[]    @relation("InningsBattingTeam")
-  bowlingInnings Innings[]    @relation("InningsBowlingTeam")
-}
-
-model TeamMember {
-  id          String       @id @default(cuid())
-  teamId      String
-  userId      String
-  roleInTeam  TeamRole     @default(player)
-  status      MemberStatus @default(PENDING)
-  invitedById String?
-  note        String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  team      Team  @relation(fields: [teamId], references: [id])
-  user      User  @relation(fields: [userId], references: [id])
-  invitedBy User? @relation("InvitedBy", fields: [invitedById], references: [id])
-
-  @@unique([teamId, userId], name: "teamId_userId")
-  @@index([teamId, status])
-  @@index([userId, status])
-}
-
-model Match {
-  id           String      @id @default(cuid())
-  tournamentId String?
-  teamAId      String
-  teamBId      String
-  ground       String
-  startTime    DateTime
-  overs        Int
-  ballType     BallType    @default(LEATHER)
-  status       MatchStatus @default(SCHEDULED)
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-
-  teamA    Team    @relation("MatchTeamA", fields: [teamAId], references: [id])
-  teamB    Team    @relation("MatchTeamB", fields: [teamBId], references: [id])
-  toss     Toss?
-  lineup   PlayingXI[]
-  innings  Innings[]
-
-  @@index([teamAId])
-  @@index([teamBId])
-  @@index([startTime])
-  @@index([status])
-}
-
-model Toss {
-  id           String       @id @default(cuid())
-  matchId      String       @unique
-  winnerTeamId String
-  decision     TossDecision
-
-  match      Match @relation(fields: [matchId], references: [id])
-  winnerTeam Team  @relation("TossWinnerTeam", fields: [winnerTeamId], references: [id])
-}
-
-model PlayingXI {
-  id           String  @id @default(cuid())
-  matchId      String
-  teamId       String
-  userId       String
-  isCaptain    Boolean @default(false)
-  isKeeper     Boolean @default(false)
-  battingOrder Int?
-
-  match  Match @relation(fields: [matchId], references: [id])
-  team   Team  @relation("PlayingXITeam", fields: [teamId], references: [id])
-  player User  @relation(fields: [userId], references: [id])
-
-  @@unique([matchId, teamId, userId])
-  @@unique([matchId, teamId, battingOrder])
-  @@index([matchId, teamId])
-}
-
-model Innings {
-  id            String    @id @default(cuid())
-  matchId       String
-  number        Int
-  battingTeamId String
-  bowlingTeamId String
-  startedAt     DateTime  @default(now())
-  endedAt       DateTime?
-
-  totalRuns  Int @default(0)
-  wickets    Int @default(0)
-  legalBalls Int @default(0)
-  wides      Int @default(0)
-  noBalls    Int @default(0)
-  byes       Int @default(0)
-  legByes    Int @default(0)
-
-  match       Match  @relation(fields: [matchId], references: [id])
-  battingTeam Team   @relation("InningsBattingTeam", fields: [battingTeamId], references: [id])
-  bowlingTeam Team   @relation("InningsBowlingTeam", fields: [bowlingTeamId], references: [id])
-  overs       Over[]
-
-  @@index([matchId, number])
-}
-
-model Over {
-  id           String    @id @default(cuid())
-  inningsId    String
-  number       Int
-  bowlerId     String
-  strikerId    String
-  nonStrikerId String
-  startedAt    DateTime  @default(now())
-  endedAt      DateTime?
-  legalBalls   Int       @default(0)
-  isComplete   Boolean   @default(false)
-
-  innings Innings @relation(fields: [inningsId], references: [id])
-  balls   Ball[]
-
-  @@unique([inningsId, number])
-  @@index([inningsId, number])
-}
-
-model Ball {
-  id                 String      @id @default(cuid())
-  overId             String
-  seq                Int
-  batsmanId          String
-  nonStrikerId       String
-  bowlerId           String
-  runs               Int         @default(0)
-  extraType          ExtraType   @default(NONE)
-  extraRuns          Int         @default(0)
-  isLegal            Boolean
-  wicketType         WicketType?
-  dismissalBatsmanId String?
-  fielderId          String?
-  commentary         String?
-  ts                 DateTime    @default(now())
-
-  over Over @relation(fields: [overId], references: [id])
-
-  @@index([overId, seq])
 }
