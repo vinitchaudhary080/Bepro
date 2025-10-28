@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8a68d257-5ba3-4ab5-9966-9fc404119f9a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/bepro.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deviceManager.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/babel.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/adaptive-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/avatars/app.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/avatars/avatar.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/avatars/me.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/avatars/player.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/avatars/team1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/avatars/team2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/avatars/user1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/avatars/user2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/awards/badge.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/awards/trophy1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/awards/trophy2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/badges/allrounder.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/badges/century.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/badges/mom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/badges/six.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/c1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/c2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/delhi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/mum_thumb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/mumbai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/p1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/p2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/p3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/p4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/p5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/p6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fixtures/stadium.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/SFProRounded-Bold.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/SFProRounded-Medium.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/SFProRounded-Regular.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/SFProRounded-Semibold.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/home/card-vignette.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/home/hero-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/home/hero-bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/home/white.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/badge.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/ball.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/ball.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/bell.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/bellp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/calendar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/chevron-left.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/chevron-right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/coin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/dots-vertical.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/edit.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/faq.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/filter-sliders.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/info.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/level-badge.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/location-dot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/logout.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/permission.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/reset.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/search.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/setting.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/share.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/task.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/team-setting.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/toss.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/trophy-yellow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/trophy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/user-circle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/user.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icons/wallet.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/login/character-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/login/character-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/login/character-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/login/character-4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/login/slide-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/login/slide-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/login/slide-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/match/hero-bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/match/hero-bg1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/myteam/create-badge.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/myteam/cross.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/myteam/hero-gradient.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/myteam/pill.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/myteam/ribbon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/myteam/sample-team-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/myteam/sample-team-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/myteam/team1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/myteam/team2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/oneonone/challenge.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/oneonone/quick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/oneonone/search.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/oneonone/series.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/oneonone/tournaments.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/oneonone/triangular.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/players/bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/players/p1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/players/p2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/players/p3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/players/player1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/players/player2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/players/player3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/players/player4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/profile/detail-hero.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/profile/manoj.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/results/aus.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/results/badge_odi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/results/badge_t20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/results/badge_test.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/results/eng.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/results/ind.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/results/pak.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/splash-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/splash.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/ball-active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/ball.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/home-active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/home.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/profile-active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/profile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/rank-active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/rank.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/team-active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tab/team.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tasks/batsman.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tasks/batsman2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tasks/batsman3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tasks/bowler.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tasks/bowler2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tasks/bowler3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/team-logos/logo1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/team-logos/logo2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/team-logos/logo3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/team-logos/logo4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/team/bg1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/team/bg2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/team/bg3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/bg-hero.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/bg1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/bg2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/bg3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/c1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/c2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/chennai-kings.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/delhi-knight.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/delhi.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/dhl.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/mub.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/mumbai-blasters.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/mumbai.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/p1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/p2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/p3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/p4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/p5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/teams/p6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/toss/1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/toss/toss-hero.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/wallet/coin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/about/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/creatematch/FixButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/creatematch/FixTimingContent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/creatematch/FixTimingHero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/creatematch/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/creatematch/NextButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/creatematch/RecommendedTeams.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/creatematch/RuleContent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/creatematch/SetGameHero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/creatematch/SetNextButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteam/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteam/NewOnApp.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteam/NextButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteam/RecommendedPlayer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteam/SearchBar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteam/TopPlayer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteamdetailpage/CreateTeamButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteamdetailpage/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteamdetailpage/Profile.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteamdetailpage/TeamDetails.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/createteamdetailpage/TeamLogo.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dailytask/CoinCard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dailytask/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dailytask/TaskHistory.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dailytask/TaskListing.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/faq/FAQList.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/faq/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/LatestResults.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/OneOnOne.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/Tasks.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/TopPlayers.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/UpcomingFixtures.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/login/Login.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/login/LoginDetails.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/login/Onboarding.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/login/ProgressDots.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/match/FloatingButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/match/UpcomingMatch.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/myteam/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/myteam/MatchesSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/myteam/YourTeam.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/nav/WavyTabBar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/notification/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/notification/NotificationList.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/notificationpanel/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/notificationpanel/NotificationsListing.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/permission/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/permission/PermissionList.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/playerprofile/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/playerprofile/ProfileCard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/playerprofile/tabs/Awards.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/playerprofile/tabs/Badges.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/playerprofile/tabs/Matches.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/playerprofile/tabs/Stats.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/playerprofile/tabs/Team.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/profile/ProfileDetailsContent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/profile/ProfileDetailsHero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/profile/ProfileScreen.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ranking/FilterSheet.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ranking/RankingPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teamsetting/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teamsetting/TeamCard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/toss/Hero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/toss/TossChoice.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ui/Text.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/wallet/AddCoinButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/wallet/WalletCard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/wallet/WalletHero.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/wallet/WalletHistory.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/AppNavigator.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/AuthStack.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/HomeStack.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/PlayStack.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/ProfileStack.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/RootTabs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/TeamStack.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/AboutAppPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/CreateMatchPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/CreateTeamDetailPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/CreateTeamPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/DailyTaskPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/EditProfilePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/FAQPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/FixTimingPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/HomePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/LoginDetailsPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/MatchPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/MyTeam.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/NotificationPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/NotificationPanelPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/OnboardingPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PermissionPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PlayerProfilePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ProfileDetailPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/RankingPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/SetGameRulesPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/TeamSettingPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/TossPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/WalletPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/colors.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/spacing.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/type.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="34QVqRQHMoq4TdnjCh3aNeLio3w" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8a68d257-5ba3-4ab5-9966-9fc404119f9a" name="Changes" comment="" />
+      <created>1761145973149</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1761145973149</updated>
+    </task>
+    <servers />
+  </component>
+</project>

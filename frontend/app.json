@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "bepro",
+    "slug": "bepro",
+    "icon": "./assets/splash.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"]
+  }
+}

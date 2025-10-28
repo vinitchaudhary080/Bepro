@@ -1,0 +1,20 @@
+<!-- ✅ Allow HTTP (non-HTTPS) requests for local/dev API testing -->
+<key>NSAppTransportSecurity</key>
+<dict>
+  <key>NSAllowsArbitraryLoads</key><true/>
+  <key>NSExceptionDomains</key>
+  <dict>
+    <key>localhost</key>
+    <dict>
+      <key>NSExceptionAllowsInsecureHTTPLoads</key><true/>
+    </dict>
+    <key>10.0.2.2</key>
+    <dict>
+      <key>NSExceptionAllowsInsecureHTTPLoads</key><true/>
+    </dict>
+    <key>192.168.1.5</key>
+    <dict>
+      <key>NSExceptionAllowsInsecureHTTPLoads</key><true/>
+    </dict>
+  </dict>
+</dict>

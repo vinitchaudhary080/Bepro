@@ -1,0 +1,81 @@
+# --- Node/Nest basics ---
+node_modules/
+dist/
+build/
+.tmp/
+temp/
+tmp/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json.*.backup
+
+# --- TypeScript ---
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+.eslintcache
+
+# --- Logs & Coverage ---
+logs/
+*.log
+*.log.*
+coverage/
+.nyc_output/
+
+# --- Env & Secrets (keep .env.example tracked) ---
+.env
+.env.*
+!.env.example
+
+# --- OS / Editor junk ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Prisma ---
+/.prisma/                 # local prisma engine cache (if created)
+/prisma/*.db              # if you ever use SQLite locally
+/prisma/*.db-journal
+# keep migrations tracked:
+# !/prisma/migrations/
+
+# --- Swagger (if you export JSON on build) ---
+swagger.json
+swagger.yaml
+
+# --- Cache & build tools ---
+.cache/
+.parcel-cache/
+.turbo/
+.next/
+.vercel/
+.sourcemaps/
+
+# --- Docker/local runtime ---
+docker-data/
+*.pid
+*.seed
+*.seed.sql
+
+# --- Uploads & local storage (if any) ---
+uploads/
+storage/
+public/uploads/
+
+# --- Mac/Windows metadata ---
+Icon?
+ehthumbs.db
+Desktop.ini
+
+# --- Coverage reports & test artifacts ---
+test-results/
+junit.xml
+lcov.info
+
+# --- Misc ---
+*.orig
+*.rej
