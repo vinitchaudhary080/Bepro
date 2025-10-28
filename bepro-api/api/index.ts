@@ -1,18 +1,23 @@
+// /api/index.ts
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../src/app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-// Cache across invocations
 let cachedApp: INestApplication;
 
 async function bootstrap() {
   if (cachedApp) return cachedApp;
 
   const app = await NestFactory.create(AppModule, { logger: ['error', 'warn'] });
+
+  app.enableCors({
+    origin: [/\.vercel\.app$/, 'http://localhost:5173', 'http://localhost:3000'],
+    credentials: true
+  });
+
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
-  // IMPORTANT: Swagger under /api/docs (Vercel maps this function to /api/*)
   const config = new DocumentBuilder()
     .setTitle('BePro API')
     .setVersion('1.0')
@@ -21,7 +26,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  await app.init(); // no app.listen() on Vercel
+  await app.init(); // important: no app.listen() on vercel
   cachedApp = app;
   return app;
 }
