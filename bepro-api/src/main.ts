@@ -21,5 +21,13 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`🚀 BePro API http://localhost:${port}`);
   console.log(`📘 Swagger  http://localhost:${port}/docs`);
+
+
+  const url = process.env.DATABASE_URL || '';
+try {
+  const host = new URL(url).host;
+  console.log('[DB] using host =', host); // e.g., ep-rough-base-a4q2gnel-pooler.us-east-1.aws.neon.tech
+} catch {}
+
 }
 bootstrap();
