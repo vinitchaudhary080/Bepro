@@ -1,21 +1,15 @@
 // /api/index.ts
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../src/app.module';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-let cachedApp: INestApplication;
+let cachedApp: any;
 
 async function bootstrap() {
   if (cachedApp) return cachedApp;
-
   const app = await NestFactory.create(AppModule, { logger: ['error', 'warn'] });
-
-  app.enableCors({
-    origin: [/\.vercel\.app$/, 'http://localhost:5173', 'http://localhost:3000'],
-    credentials: true
-  });
-
+  app.enableCors({ origin: true, credentials: true });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   const config = new DocumentBuilder()
@@ -23,10 +17,10 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
+  const doc = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, doc);
 
-  await app.init(); // important: no app.listen() on vercel
+  await app.init(); // IMPORTANT: no app.listen() on Vercel
   cachedApp = app;
   return app;
 }
