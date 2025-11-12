@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,8 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { TeamStackParamList } from "../../navigation/TeamStack"; // <-- ✅
+import type { TeamStackParamList } from "../../navigation/TeamStack";
+import { api } from "../../config/api"; // ✅ central API wrapper
 
 const { width } = Dimensions.get("window");
 const H_PADDING = 16;
@@ -20,26 +21,29 @@ const CARD_W = Math.min(width - H_PADDING * 2, 360);
 const CARD_H = Math.round(CARD_W * 0.56);
 const RADIUS = 18;
 
+// fallback logo if logoUrl missing
+const TEAM_PLACEHOLDER = require("../../assets/team/bg1.jpg");
+
 export type TeamCardItem = {
   id: string | number;
   title: string;           // e.g. "Delhi Knight Fighters"
   subtitle?: string;       // e.g. "You are Captain on this team"
-  image: any;              // require("../assets/xyz.png")
-  onPress?: () => void;    // optional custom handler
+  image: any;              // require(...) or { uri }
+  onPress?: () => void;
 };
 
 type Props = {
   heading?: string;        // default: "Your Team"
-  items: TeamCardItem[];
+  items?: TeamCardItem[];  // optional initial items, API will override
 };
 
 function TeamCard({ item }: { item: TeamCardItem }) {
-  const navigation = useNavigation<NativeStackNavigationProp<TeamStackParamList>>(); // ✅
+  const navigation =
+    useNavigation<NativeStackNavigationProp<TeamStackParamList>>();
 
   const handlePress = item.onPress
     ? item.onPress
     : () => {
-        // ✅ default navigation + params
         navigation.navigate("MyTeamDetail", {
           teamId: String(item.id),
           teamName: item.title,
@@ -48,7 +52,7 @@ function TeamCard({ item }: { item: TeamCardItem }) {
 
   return (
     <Pressable
-      onPress={handlePress} // ✅
+      onPress={handlePress}
       android_ripple={{ color: "rgba(255,255,255,0.15)", borderless: true }}
       style={({ pressed }) => [
         styles.card,
@@ -83,15 +87,54 @@ function TeamCard({ item }: { item: TeamCardItem }) {
   );
 }
 
-function YourTeam({ heading = "Your Team", items }: Props) {
+function YourTeam({ heading = "Your Team", items = [] }: Props) {
+  const [teams, setTeams] = useState<TeamCardItem[]>(items);
+
   const key = useCallback((it: TeamCardItem) => String(it.id), []);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadTeams = async () => {
+      try {
+        // GET /teams/mine with auth header from api wrapper
+        const { data } = await api.get<any>("/teams/mine");
+        // response: { success: true, data: [...] }
+        const list = data?.data || [];
+
+        const mapped: TeamCardItem[] = list.map((t: any) => ({
+          id: t.id,
+          title: t.name || "Unnamed Team",
+          // optional subtitle, adjust copy if you want
+          subtitle: "Tap to view team",
+          image: t.logoUrl ? { uri: t.logoUrl } : TEAM_PLACEHOLDER,
+        }));
+
+        if (mounted) {
+          setTeams(mapped);
+        }
+      } catch (err: any) {
+        console.log(
+          "🚨 [YourTeam] Error fetching /teams/mine:",
+          err?.status,
+          err?.message
+        );
+      }
+    };
+
+    loadTeams();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <View style={styles.wrap}>
       <Text style={styles.heading}>{heading}</Text>
 
       <FlatList
-        data={items}
+        data={teams}
         keyExtractor={key}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -103,6 +146,17 @@ function YourTeam({ heading = "Your Team", items }: Props) {
           offset: (CARD_W + 14) * index + H_PADDING,
           index,
         })}
+        ListEmptyComponent={
+          <Text
+            style={{
+              paddingHorizontal: H_PADDING,
+              fontSize: 13,
+              color: "#858CAB",
+            }}
+          >
+            No teams found.
+          </Text>
+        }
       />
     </View>
   );
@@ -138,5 +192,10 @@ const styles = StyleSheet.create({
   gradient: { ...StyleSheet.absoluteFillObject, borderRadius: RADIUS },
   textBlock: { paddingHorizontal: 16, paddingVertical: 14 },
   title: { color: "#FFFFFF", fontSize: 18, fontWeight: "700" },
-  subtitle: { marginTop: 4, color: "rgba(255,255,255,0.9)", fontSize: 13, fontWeight: "500" },
+  subtitle: {
+    marginTop: 4,
+    color: "rgba(255,255,255,0.9)",
+    fontSize: 13,
+    fontWeight: "500",
+  },
 });

@@ -9,6 +9,7 @@ import { TeamMembersModule } from './team-members/team-members.module';
 import { MatchesModule } from './matches/matches.module';
 import { ScoringModule } from './scoring/scoring.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { OnboardingModule } from './onboarding/onboarding.module';
     MatchesModule,
     ScoringModule,
     OnboardingModule,
+    TasksModule,
   ],
 })
 export class AppModule {}

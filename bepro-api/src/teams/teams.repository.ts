@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma, MemberStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class TeamsRepository {
@@ -56,7 +56,7 @@ export class TeamsRepository {
     return { items, total, page, limit, pages: Math.ceil(total / limit) };
   }
 
-  // NEW: current user's teams
+  // current user's teams
   listByOwner(ownerId: string) {
     return this.prisma.team.findMany({
       where: { ownerId },
@@ -71,5 +71,41 @@ export class TeamsRepository {
         updatedAt: true,
       },
     });
-    }
+  }
+
+  // - - - NEW: all teams with approved members and their user data - - -
+  async listWithMembers() {
+    return this.prisma.team.findMany({
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        logoUrl: true,
+        ownerId: true,
+        createdAt: true,
+        members: {
+          where: { status: MemberStatus.APPROVED },
+          select: {
+            id: true,
+            roleInTeam: true,
+            status: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                profile: {
+                  select: {
+                    avatarUrl: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }

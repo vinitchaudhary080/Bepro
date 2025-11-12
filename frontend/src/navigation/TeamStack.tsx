@@ -6,6 +6,7 @@ import CreateTeamPage from "../pages/CreateTeamPage";
 import CreateTeamDetailPage from "../pages/CreateTeamDetailPage";
 import MyTeamDetailPage from "../pages/MyTeamDetailPage";
 
+
 export type TeamStackParamList = {
   MyTeam: undefined;
   CreateTeam: undefined; 
@@ -22,6 +23,11 @@ export default function TeamStack() {
       <Stack.Screen name="CreateTeam" component={CreateTeamPage} />
       <Stack.Screen name="CreateTeamDetail" component={CreateTeamDetailPage} /> 
       <Stack.Screen name="MyTeamDetail" component={MyTeamDetailPage} />
+      <Stack.Screen
+        name="CreateTeamPage"
+        component={CreateTeamPage}
+        options={{ title: "Create Team" }}
+      />
     </Stack.Navigator>
   );
 }

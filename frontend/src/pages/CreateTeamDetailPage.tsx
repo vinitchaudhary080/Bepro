@@ -70,12 +70,7 @@ export default function CreateTeamDetailPage() {
           <Hero />
           <Profile photoUri={photoUri} onPick={(uri) => setPhotoUri(uri)} />
 
-          <TeamLogo
-            title="Team Logo"
-            logos={logos}
-            selectedId={selectedLogo}
-            onSelect={(id) => setSelectedLogo(id)}
-          />
+         
 
           <TeamDetails
             teamName={teamName}

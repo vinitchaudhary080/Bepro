@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { fonts } from "../../theme/type";
 import { colors } from "../../theme/colors";
+import { api } from "../../config/api"; // ✅ use same API wrapper as TopPlayers
 
 const { width } = Dimensions.get("window");
 
@@ -20,84 +21,104 @@ const CARD_H = 180;
 const RADIUS = 16;
 const GUTTER = 14;
 
-const tasksData = {
-  daily: [
-    {
-      id: 1,
-      title: "Score 15 Runs in a Match",
-      desc: "Prove your batting consistency by hitting those quick runs.",
-      color1: "#0285FF",
-      color2: "#0059D6",
-    },
-    {
-      id: 2,
-      title: "Hit 3 Boundaries in 10 Balls",
-      desc: "Show your power play skills — go big in limited chances!",
-      color1: "#6C2CFB",
-      color2: "#3313A1",
-    },
-    {
-      id: 3,
-      title: "Take 2 Wickets in a Match",
-      desc: "Lead your bowling attack with precision and power!",
-      color1: "#FF3A57",
-      color2: "#D82040",
-    },
-  ],
-  weekly: [
-    {
-      id: 1,
-      title: "Take 5 Wickets This Week",
-      desc: "Be the game changer your team needs!",
-      color1: "#F93A3A",
-      color2: "#C91E1E",
-    },
-    {
-      id: 2,
-      title: "Win 2 Consecutive Matches",
-      desc: "Consistency defines champions!",
-      color1: "#00CBA8",
-      color2: "#009F86",
-    },
-    {
-      id: 3,
-      title: "Score 100 Runs This Week",
-      desc: "Maintain your form and push for a top performance!",
-      color1: "#FF7A00",
-      color2: "#D45C00",
-    },
-  ],
-  monthly: [
-    {
-      id: 1,
-      title: "Score 200 Runs This Month",
-      desc: "Keep building the scoreboard all month long!",
-      color1: "#FF7A00",
-      color2: "#D45C00",
-    },
-    {
-      id: 2,
-      title: "Play 10 Matches",
-      desc: "Keep the momentum going — more matches, more experience.",
-      color1: "#A84FF8",
-      color2: "#6B1DE4",
-    },
-    {
-      id: 3,
-      title: "Earn Player of the Month",
-      desc: "Show consistency, dedication and sportsmanship.",
-      color1: "#0285FF",
-      color2: "#0059D6",
-    },
-  ],
+type Frequency = "DAILY" | "WEEKLY" | "MONTHLY";
+type TabKey = "daily" | "weekly" | "monthly";
+
+type ApiTask = {
+  id: string;
+  frequency: Frequency;
+  status: "PENDING" | "COMPLETED" | string;
+  points: number;
+  title: string;
+  description: string;
+  periodStart: string;
+  periodEnd: string;
+  completedAt: string | null;
+};
+
+type UITask = {
+  id: string;
+  title: string;
+  desc: string;
+  color1: string;
+  color2: string;
+  status: string;
+  points: number;
+};
+
+const FREQUENCY_COLORS: Record<Frequency, { color1: string; color2: string }> = {
+  DAILY:   { color1: "#0285FF", color2: "#0059D6" },
+  WEEKLY:  { color1: "#00CBA8", color2: "#009F86" },
+  MONTHLY: { color1: "#FF7A00", color2: "#D45C00" },
+};
+
+const TAB_TO_FREQ: Record<TabKey, Frequency> = {
+  daily: "DAILY",
+  weekly: "WEEKLY",
+  monthly: "MONTHLY",
 };
 
 export default function TasksSection() {
-  const [activeTab, setActiveTab] = useState<"daily" | "weekly" | "monthly">(
-    "daily"
-  );
+  const [activeTab, setActiveTab] = useState<TabKey>("daily");
 
-  const renderCard = ({ item }: any) => (
+  const [tasksByFrequency, setTasksByFrequency] = useState<
+    Record<Frequency, UITask[]>
+  >({
+    DAILY: [],
+    WEEKLY: [],
+    MONTHLY: [],
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const loadTasks = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await api.get<any>("/tasks/today");
+
+      // API response: { success: true, data: ApiTask[] }
+      const items: ApiTask[] = data?.data || [];
+
+      const grouped: Record<Frequency, UITask[]> = {
+        DAILY: [],
+        WEEKLY: [],
+        MONTHLY: [],
+      };
+
+      items.forEach((t) => {
+        const freq = t.frequency as Frequency;
+        if (!grouped[freq]) return;
+
+        const colorsCfg = FREQUENCY_COLORS[freq];
+
+        grouped[freq].push({
+          id: t.id,
+          title: t.title,
+          desc: t.description,
+          color1: colorsCfg.color1,
+          color2: colorsCfg.color2,
+          status: t.status,
+          points: t.points,
+        });
+      });
+
+      setTasksByFrequency(grouped);
+    } catch (err: any) {
+      console.log(
+        "🚨 [TasksSection] Error fetching /tasks/today:",
+        err?.status,
+        err?.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTasks();
+  }, [loadTasks]);
+
+  const renderCard = ({ item }: { item: UITask }) => (
     <View style={styles.cardWrap}>
       <LinearGradient
         colors={[item.color1, item.color2]}
@@ -114,25 +135,32 @@ export default function TasksSection() {
 
         {/* card content */}
         <View style={styles.cardContent}>
-          {/* 👇 icon above heading */}
+          {/* icon above heading */}
           <Image
             source={require("../../assets/icons/ball.png")}
             style={styles.cardIcon}
             resizeMode="contain"
           />
 
-          <Text style={styles.cardTitle}>{item.title}</Text>
-          <Text style={styles.cardDesc}>{item.desc}</Text>
+          <Text style={styles.cardTitle} numberOfLines={2}>
+            {item.title}
+          </Text>
+          <Text style={styles.cardDesc} numberOfLines={3}>
+            {item.desc}
+          </Text>
         </View>
       </LinearGradient>
     </View>
   );
 
-  const tabs = [
+  const tabs: { key: TabKey; label: string }[] = [
     { key: "daily", label: "Daily Task" },
     { key: "weekly", label: "Weekly Task" },
     { key: "monthly", label: "Monthly Task" },
   ];
+
+  const currentFreq = TAB_TO_FREQ[activeTab];
+  const currentTasks = tasksByFrequency[currentFreq] || [];
 
   return (
     <View style={styles.container}>
@@ -145,7 +173,7 @@ export default function TasksSection() {
           return (
             <Pressable
               key={tab.key}
-              onPress={() => setActiveTab(tab.key as any)}
+              onPress={() => setActiveTab(tab.key)}
               style={({ pressed }) => [
                 styles.tabBase,
                 isActive ? styles.tabActive : styles.tabInactive,
@@ -169,11 +197,16 @@ export default function TasksSection() {
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={tasksData[activeTab]}
+        data={currentTasks}
         renderItem={renderCard}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ paddingHorizontal: 16 }}
         ItemSeparatorComponent={() => <View style={{ width: GUTTER }} />}
+        ListEmptyComponent={
+          !loading ? (
+            <Text style={styles.emptyText}>No tasks available.</Text>
+          ) : null
+        }
       />
     </View>
   );
@@ -246,21 +279,19 @@ const styles = StyleSheet.create({
   overlayImage: {
     ...StyleSheet.absoluteFillObject,
     borderRadius: RADIUS,
-    opacity: 0.80, // if too strong, try 0.3–0.5
+    opacity: 0.8,
   },
   cardContent: {
     flex: 1,
     justifyContent: "flex-start",
     padding: 14,
-    paddingTop: 28, // space for icon + title
+    paddingTop: 28,
   },
-  // 👇 icon above heading
   cardIcon: {
     width: 36,
     height: 36,
     marginBottom: 10,
     alignSelf: "flex-start",
-    // optional soft backdrop to make it pop on bright gradients:
     backgroundColor: "rgba(255,255,255,0.18)",
     borderRadius: 18,
     padding: 6,
@@ -275,6 +306,12 @@ const styles = StyleSheet.create({
   cardDesc: {
     color: "rgba(255,255,255,0.85)",
     fontSize: 12,
+    fontFamily: fonts.regular,
+  },
+  emptyText: {
+    paddingHorizontal: 16,
+    fontSize: 13,
+    color: "#858CAB",
     fontFamily: fonts.regular,
   },
 });

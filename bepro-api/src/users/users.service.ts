@@ -107,4 +107,27 @@ export class UsersService {
 
     return { page, size, total, pages: Math.ceil(total / size), items };
   }
+
+  // --- LIST FOR TEAM INVITE
+  async listUsersForInvite(
+    userId: string,
+    q: { page?: number; limit?: number; search?: string },
+  ) {
+    const page = Math.max(1, Number(q.page ?? 1));
+    const limit = Math.min(100, Math.max(1, Number(q.limit ?? 20)));
+
+    const { items, total } = await this.repo.listForInvite(userId, {
+      page,
+      limit,
+      search: q.search,
+    });
+
+    return {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit),
+      items,
+    };
+  }
 }

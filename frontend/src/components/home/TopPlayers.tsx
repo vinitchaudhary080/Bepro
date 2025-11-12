@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { fonts } from "../../theme/type";
+import { api } from "../../config/api"; // ✅ central API wrapper
+const EMPTY_USER = require("../../assets/icons/Empty-user.png");
 
 const { width } = Dimensions.get("window");
 
@@ -29,7 +31,7 @@ export type PlayerItem = {
 
 type Props = {
   title?: string;
-  data: PlayerItem[];
+  data?: PlayerItem[];
   onPressItem?: (item: PlayerItem) => void;
 };
 
@@ -48,14 +50,12 @@ function PlayerCard({
         pressed && { transform: [{ scale: 0.97 }] },
       ]}
     >
-      {/* full image as background */}
       <ImageBackground
         source={item.image}
         style={styles.card}
         imageStyle={styles.cardImg}
         resizeMode="cover"
       >
-        {/* dark-to-transparent gradient for text readability */}
         <LinearGradient
           colors={[
             "rgba(0,0,0,0.85)",
@@ -68,7 +68,6 @@ function PlayerCard({
           style={styles.gradient}
         />
 
-        {/* text overlay */}
         <View style={styles.caption}>
           <Text style={styles.name} numberOfLines={1}>
             {item.name}
@@ -83,6 +82,8 @@ function PlayerCard({
 }
 
 function TopPlayers({ title = "Top Players", data, onPressItem }: Props) {
+  const [players, setPlayers] = useState<PlayerItem[]>(data || []);
+
   const key = useCallback((it: PlayerItem) => String(it.id), []);
   const render = useCallback(
     ({ item }: { item: PlayerItem }) => (
@@ -91,12 +92,50 @@ function TopPlayers({ title = "Top Players", data, onPressItem }: Props) {
     [onPressItem]
   );
 
+  useEffect(() => {
+    let mounted = true;
+
+    const loadPlayers = async () => {
+      try {
+        // ✅ api wrapper use, token + refresh sab handle karega
+        const { data } = await api.get<any>("/users?page=1&limit=10");
+
+        // Response shape:
+        // { success: true, data: { page, limit, total, pages, items: [...] } }
+        const items = data?.data?.items || [];
+
+        const mapped: PlayerItem[] = items.map((u: any) => ({
+          id: u.id,
+          name: u.name || "Unknown",
+          role: u.role || "",
+          image: u.avatarUrl ? { uri: u.avatarUrl } : EMPTY_USER,
+        }));
+
+        if (mounted) {
+          setPlayers(mapped);
+        }
+      } catch (err: any) {
+        console.log(
+          "🚨 [TopPlayers] Error fetching users:",
+          err?.status,
+          err?.message
+        );
+      }
+    };
+
+    loadPlayers();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
 
       <FlatList
-        data={data}
+        data={players}
         keyExtractor={key}
         renderItem={render}
         horizontal
@@ -160,7 +199,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: "55%", // tune darkness spread
+    height: "55%",
   },
   caption: {
     position: "absolute",

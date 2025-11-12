@@ -1,14 +1,30 @@
 // components/login/LoginDetails.tsx
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-  View, Text, Image, StyleSheet, Pressable, Dimensions, Platform,
-  FlatList, TextInput, NativeSyntheticEvent, NativeScrollEvent, ScrollView
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+  Platform,
+  FlatList,
+  TextInput,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { colors as themeColors } from "../../theme/colors";
 import { fonts } from "../../theme/type";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { api } from "../../config/api"; // ✅ central API wrapper
+import { debugAuth } from "../../config/api";
 
 const { width } = Dimensions.get("window");
 export type DetailSlide = { image: any };
+
+
 
 type Props = {
   slides: DetailSlide[];
@@ -28,6 +44,7 @@ export default function LoginDetails({
   autoPlay = true,
   intervalMs = 3500,
   onLoginSuccess,
+  onLoginError,
   onPressRegister,
 }: Props) {
   const listRef = useRef<FlatList<DetailSlide>>(null);
@@ -59,21 +76,104 @@ export default function LoginDetails({
   const [password, setPassword] = useState("");
   const [tEmail, setTEmail] = useState(false);
   const [tPass, setTPass] = useState(false);
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validEmail = emailRegex.test(email.trim());
   const validPass = password.length >= 6;
   const isValid = validEmail && validPass;
   const passRef = useRef<TextInput>(null);
 
-  // 🔄 API removed → simple handler
-  const submit = () => {
+  // API related states
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+  // ✅ Prefill from registration screen
+  useEffect(() => {
+    const loadPrefill = async () => {
+      try {
+        const savedEmail = await AsyncStorage.getItem("@prefill_email");
+        const savedPassword = await AsyncStorage.getItem("@prefill_password");
+
+        if (savedEmail || savedPassword) {
+          console.log("🧩 [Login] Prefill found:", {
+            email: savedEmail,
+            password: savedPassword,
+          });
+        }
+
+        if (savedEmail) setEmail(savedEmail);
+        if (savedPassword) setPassword(savedPassword);
+
+        // Prefill ka data use hone ke baad clean up
+        if (savedEmail || savedPassword) {
+          await AsyncStorage.removeItem("@prefill_email");
+          await AsyncStorage.removeItem("@prefill_password");
+          console.log("🧽 [Login] Prefill keys cleared from storage");
+        }
+      } catch (e) {
+        console.log("⚠️ [Login] Error while loading prefill:", e);
+      }
+    };
+
+    loadPrefill();
+  }, []);
+
+  const submit = async () => {
     setTEmail(true);
     setTPass(true);
+
+    // client validation
     if (!isValid) return;
 
-    // direct success → parent (LoginDetailsPage) will navigate to Home/Tabs
-    const mockData = { user: { email: email.trim() }, token: "dev-login-skip" };
-    onLoginSuccess?.(mockData);
+    setServerError(null);
+    setSuccessMsg(null);
+    setLoading(true);
+
+    try {
+      console.log("🔐 [Login] Submitting with:", {
+        email: email.trim(),
+        passwordLength: password.length,
+      });
+
+      // ✅ Central login helper, tokens yahi save ho jayenge
+      const data = await api.login(email.trim(), password);
+      await debugAuth("[After Login]");
+
+      console.log("✅ [Login] Success response:", data);
+      setSuccessMsg("Login successful.");
+      onLoginSuccess?.(data);
+      } catch (err: any) {
+    console.log("🚨 [Login] Error from api.login:", err);
+    console.log("🚨 [Login] err.status:", err?.status);
+    console.log("🚨 [Login] err.data:", JSON.stringify(err?.data, null, 2));
+
+    const status = err?.status as number | undefined;
+    const respData = err?.data;
+    let msg: string = "Something went wrong, please try again.";
+
+    if (respData?.message) {
+      if (typeof respData.message === "string") {
+        msg = respData.message;
+      } else if (Array.isArray(respData.message) && respData.message.length > 0) {
+        msg = String(respData.message[0]);
+      } else if (typeof respData.message === "object") {
+        msg = JSON.stringify(respData.message);
+      }
+    } else if (typeof err?.message === "string") {
+      msg = err.message;
+    }
+
+    if (status === 400 || status === 401) {
+      msg = "Invalid email or password.";
+    }
+
+    setServerError(msg);
+    onLoginError?.(msg, status, respData ?? err);
+  } finally {
+    setLoading(false);
+  }
+
   };
 
   const renderItem = useCallback(
@@ -94,7 +194,11 @@ export default function LoginDetails({
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={onMomentumEnd}
-        getItemLayout={(_, i) => ({ length: width, offset: width * i, index: i })}
+        getItemLayout={(_, i) => ({
+          length: width,
+          offset: width * i,
+          index: i,
+        })}
         initialScrollIndex={0}
         style={{ flexGrow: 0 }}
       />
@@ -115,7 +219,9 @@ export default function LoginDetails({
           <View
             style={[
               styles.inputBox,
-              tEmail && !validEmail ? { borderColor: "#FC374E" } : { borderColor: "#E6EAF2" },
+              tEmail && !validEmail
+                ? { borderColor: "#FC374E" }
+                : { borderColor: "#E6EAF2" },
             ]}
           >
             <TextInput
@@ -134,7 +240,9 @@ export default function LoginDetails({
             />
           </View>
           {tEmail && !validEmail ? (
-            <Text style={styles.error}>Please enter a valid email address.</Text>
+            <Text style={styles.error}>
+              Please enter a valid email address.
+            </Text>
           ) : null}
         </View>
 
@@ -143,7 +251,9 @@ export default function LoginDetails({
           <View
             style={[
               styles.inputBox,
-              tPass && !validPass ? { borderColor: "#FC374E" } : { borderColor: "#E6EAF2" },
+              tPass && !validPass
+                ? { borderColor: "#FC374E" }
+                : { borderColor: "#E6EAF2" },
             ]}
           >
             <TextInput
@@ -163,28 +273,49 @@ export default function LoginDetails({
             />
           </View>
           {tPass && !validPass ? (
-            <Text style={styles.error}>Password must be at least 6 characters.</Text>
+            <Text style={styles.error}>
+              Password must be at least 6 characters.
+            </Text>
           ) : null}
         </View>
 
         {/* CTA */}
         <Pressable
-          disabled={!isValid}
+          disabled={!isValid || loading}
           onPress={submit}
           style={[
             styles.cta,
-            { backgroundColor: !isValid ? "#D8DCE5" : accent },
-            Platform.OS === "android" ? styles.ctaShadowAndroid : styles.ctaShadowIOS,
+            {
+              backgroundColor: !isValid || loading ? "#D8DCE5" : accent,
+            },
+            Platform.OS === "android"
+              ? styles.ctaShadowAndroid
+              : styles.ctaShadowIOS,
           ]}
         >
-          <Text style={styles.ctaText}>Log In</Text>
+          {loading ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <Text style={styles.ctaText}>Log In</Text>
+          )}
         </Pressable>
 
+        {/* API messages */}
+        {serverError ? (
+          <Text style={styles.serverError}>{serverError}</Text>
+        ) : null}
+        {successMsg ? (
+          <Text style={styles.successMsg}>{successMsg}</Text>
+        ) : null}
+
         {/* Footer */}
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center", marginTop: 16 }}>
           <Text style={styles.footerText}>
             Don’t have an account?{" "}
-            <Text style={[styles.footerLink, { color: accent }]} onPress={onPressRegister}>
+            <Text
+              style={[styles.footerLink, { color: accent }]}
+              onPress={onPressRegister}
+            >
               Register
             </Text>
           </Text>
@@ -202,7 +333,13 @@ const styles = StyleSheet.create({
   hero: { width, height: Math.round((width / 3) * 3), marginTop: 68 },
   body: { flex: 1 },
   bodyContent: { paddingHorizontal: 20, paddingTop: 76, paddingBottom: 32 },
-  heading: { fontSize: 26, lineHeight: 30, marginTop: 16, textAlign: "center", fontFamily: fonts.bold },
+  heading: {
+    fontSize: 26,
+    lineHeight: 30,
+    marginTop: 16,
+    textAlign: "center",
+    fontFamily: fonts.bold,
+  },
   sub: {
     fontSize: 14,
     lineHeight: 20,
@@ -213,7 +350,12 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
   },
   fieldWrap: { marginBottom: 18 },
-  label: { fontSize: 13, color: "#6B7280", marginBottom: 8, fontFamily: fonts.medium },
+  label: {
+    fontSize: 13,
+    color: "#6B7280",
+    marginBottom: 8,
+    fontFamily: fonts.medium,
+  },
   inputBox: {
     borderWidth: 1,
     borderRadius: 16,
@@ -224,14 +366,19 @@ const styles = StyleSheet.create({
     ...IOS_CONTINUOUS,
   },
   input: { fontSize: 16, color: "#0E1726", fontFamily: fonts.medium },
-  error: { marginTop: 8, color: "#FC374E", fontSize: 12, fontFamily: fonts.medium },
+  error: {
+    marginTop: 8,
+    color: "#FC374E",
+    fontSize: 12,
+    fontFamily: fonts.medium,
+  },
   cta: {
     height: 60,
     borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 18,
-    marginBottom: 18,
+    marginBottom: 8,
     ...IOS_CONTINUOUS,
   },
   ctaShadowIOS: {
@@ -245,4 +392,18 @@ const styles = StyleSheet.create({
   ctaText: { color: "#FFFFFF", fontSize: 16, fontFamily: fonts.semibold },
   footerText: { fontSize: 14, color: "#6B7280", fontFamily: fonts.medium },
   footerLink: { fontSize: 14, fontFamily: fonts.semibold },
+  serverError: {
+    marginTop: 6,
+    fontSize: 13,
+    color: "#FC374E",
+    textAlign: "center",
+    fontFamily: fonts.medium,
+  },
+  successMsg: {
+    marginTop: 6,
+    fontSize: 13,
+    color: "#16A34A",
+    textAlign: "center",
+    fontFamily: fonts.medium,
+  },
 });

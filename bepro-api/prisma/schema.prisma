@@ -20,11 +20,14 @@ model User {
   tokenVersion     Int          @default(0)
   deletedAt        DateTime?
   isActive         Boolean      @default(true)
+  valuePoints      Float        @default(0)
   playingXI        PlayingXI[]
   profile          Profile?
   teams            Team[]       @relation("TeamOwner")
   invitesSent      TeamMember[] @relation("InvitedBy")
   memberships      TeamMember[]
+  tasks            UserTask[]
+  
 }
 
 model Profile {
@@ -199,6 +202,35 @@ model Ball {
   @@index([overId, seq])
 }
 
+model TaskTemplate {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  frequency   TaskFrequency
+  points      Float
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  assignments UserTask[]
+}
+
+model UserTask {
+  id          String        @id @default(cuid())
+  userId      String
+  taskId      String
+  frequency   TaskFrequency
+  status      TaskStatus    @default(PENDING)
+  points      Float
+  periodStart DateTime
+  periodEnd   DateTime
+  createdAt   DateTime      @default(now())
+  completedAt DateTime?
+  task        TaskTemplate  @relation(fields: [taskId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
+
+  @@index([userId, frequency, periodStart, status])
+}
+
 enum TeamRole {
   player
   captain
@@ -280,4 +312,16 @@ enum WicketType {
   OBSTRUCTING
   RETIRED
   TIMED_OUT
+}
+
+enum TaskFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum TaskStatus {
+  PENDING
+  COMPLETED
+  EXPIRED
 }

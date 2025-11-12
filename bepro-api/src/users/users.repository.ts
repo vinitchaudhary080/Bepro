@@ -91,11 +91,75 @@ export class UsersRepository {
           isActive: true,
           createdAt: true,
           updatedAt: true,
+          valuePoints: true, // ✅ Added for admin listing too
         },
       }),
       this.prisma.user.count({ where }),
     ]);
 
     return { items, total, page, size, pages: Math.ceil(total / size) };
+  }
+
+  /* ---- List for team invite (basic public info) ---- */
+  async listForInvite(
+    currentUserId: string,
+    params: { page: number; limit: number; search?: string },
+  ) {
+    const page = Math.max(1, params.page || 1);
+    const limit = Math.min(100, params.limit || 20);
+    const search = params.search?.trim();
+
+    const where: Prisma.UserWhereInput = {
+      isActive: true,
+      deletedAt: null,
+      ...(search && search.length
+        ? {
+            OR: [
+              { name: { contains: search, mode: 'insensitive' } },
+              { email: { contains: search, mode: 'insensitive' } },
+              { phone: { contains: search, mode: 'insensitive' } },
+            ],
+          }
+        : {}),
+    };
+
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.user.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          role: true,
+          valuePoints: true, // ✅ Added this field
+          profile: {
+            select: {
+              avatarUrl: true,
+            },
+          },
+        },
+      }),
+      this.prisma.user.count({ where }),
+    ]);
+
+    return {
+      items: items.map((u) => ({
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        phone: u.phone,
+        role: u.role,
+        valuePoints: u.valuePoints ?? 0, // ✅ Safe fallback
+        avatarUrl: u.profile?.avatarUrl ?? null,
+      })),
+      total,
+      page,
+      limit,
+      pages: Math.ceil(total / limit),
+    };
   }
 }
